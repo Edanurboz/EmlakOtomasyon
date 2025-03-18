@@ -37,7 +37,7 @@ export const getAllResidencies = asyncHandler(async (req, res) => {
             createdAt: "desc"
         }
     })
-    res.send({ residencies })
+    res.send( residencies )
 })
 
 export const getResidency = asyncHandler(async(req,res)=>{
