@@ -5,3 +5,4 @@ const jwtCheck = auth({
     issuerBaseURL:"https://dev-nfg02ii4yd3b5isn.us.auth0.com",
     tokenSigningAlg:"RS256"
 })
+export default jwtCheck

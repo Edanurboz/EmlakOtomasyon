@@ -1,7 +1,7 @@
-import React from "react";
-import { useQuery } from "react-query";
+import React, { useContext, useState } from "react";
+import { useMutation, useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import { getProperty } from "../utils/api";
+import { getProperty, removeBooking } from "../utils/api";
 import { PuffLoader } from "react-spinners";
 import { FaHeart, FaLocationDot, FaStar } from "react-icons/fa6";
 import {
@@ -11,14 +11,37 @@ import {
 } from "react-icons/md";
 import { CgRuler } from "react-icons/cg";
 import Map from "../components/Map";
+import useAuthCheck from "../hooks/useAuthCheck";
+import { useAuth0 } from "@auth0/auth0-react";
+import BookingModal from "../components/BookingModal";
+import UserDetailContext from "../context/UserDetailContext";
+import { Button } from "@mantine/core";
+import { toast } from "react-toastify";
+import HeartBtn from "../components/HeartBtn";
 
 const Property = () => {
+  const [modalOpened, setModalOpened] = useState(false);
+  const {validateLogin} = useAuthCheck()
   const { pathname } = useLocation();
   const id = pathname.split("/").slice(-1)[0];
+  const {user} = useAuth0();
 
-  const { data, isLoading, isError } = useQuery(["resd", id], () =>
-    getProperty(id)
-  );
+  const { data, isLoading, isError } = useQuery(["resd", id], () => getProperty(id));
+
+  const {userDetails: {token, bookings}, setUserDetails } = useContext(UserDetailContext)
+
+  const {mutate : cancelBooking, isLoading : cancelling} = useMutation
+  ({
+    mutationFn : () => removeBooking(id, user?.email, token),
+    onSuccess : () => {
+      setUserDetails((prev) => ({
+        ...prev,
+        bookings: prev.bookings.filter((booking) => booking?.id !== id),
+
+      }))
+      toast.success("Booking cancelled", {position: "bottom-right"})
+    }
+  })
 
   if (isLoading) {
     return (
@@ -51,7 +74,7 @@ const Property = () => {
         />
         {/* LIKE BIN */}
         <div className="absolute top-8 right-8">
-          <FaHeart className="text-white text-xl" />
+          <HeartBtn id ={id}/>
         </div>
       </div>
       {/* CONTAINER */}
@@ -96,11 +119,45 @@ const Property = () => {
           <h4 className="h4 mt-3">Property Details</h4>
           <p className="mb-4">{data?.description}</p>
           <div className="flexBetween pt-7">
-            <button className="btn-dark">book visit</button>
+            {bookings?.map((booking) => booking.id).includes(id) ? (
+              <>
+                <Button
+                   onClick={() => cancelBooking()}
+                   variant="outline"
+                   w={"100%"}
+                   color="red"
+                   disabled={cancelling}
+                >
+                   Cancel Booking
+                </Button>
+                <p className="text-red-500 medium-15 ml-3">
+                  You've already Booked visit for {bookings?.filter
+                  ((booking) => booking?.id === id)[0].date}
+                </p>
+              </>
+            ) : (
+              <Button
+              onClick={()=>{
+                validateLogin() && setModalOpened(true)
+              }} 
+              variant="filled"
+              w={"20%"}
+              color="black"
+              >
+              Book visit
+            </Button>
+            )
+            }
+            <BookingModal 
+            opened = {modalOpened}
+            setOpened = {setModalOpened}
+            propertyId = {id}
+            email = {user?.email}
+            />
           </div>
         </div>
         {/* RIGHT SIDE (Artık alt kısım olacak) */}
-        <div className="w-full">
+        <div className="flex-1">
           <Map
             address={data?.address}
             city={data?.city}

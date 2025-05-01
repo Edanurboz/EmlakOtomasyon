@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")).render(
       redirect_uri: "http://localhost:5173",
     }}
     audience="http://localhost:3000"
-    scope="openid:profile email"
+    scope="openid profile email"
   >
     <MantineProvider>
     <App />

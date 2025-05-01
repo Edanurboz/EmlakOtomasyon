@@ -3,6 +3,7 @@ import { FaHeart } from 'react-icons/fa';
 import { MdOutlineBathtub, MdOutlineBed, MdOutlineGarage } from 'react-icons/md';
 import { CgRuler } from 'react-icons/cg'
 import { useNavigate } from 'react-router-dom';
+import HeartBtn from './HeartBtn';
 const Item = ({property}) => {
 
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Item = ({property}) => {
         <div className='relative'>
             <img src={property.image} alt={property.title} className='h-[13rem] w-full aspect-square object-cover' />
             <div className='absolute top-4 right-6'>
-                <FaHeart className='text-white text-xl'/>
+                <HeartBtn id={property.id} />
             </div>
         </div>
         {/* INFO */}
