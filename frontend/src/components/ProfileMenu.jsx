@@ -12,10 +12,8 @@ const ProfileMenu = ({ user, logout }) => {
         <Avatar src={user?.picture} alt="userImg" radius={"xl"} />
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>Application</Menu.Label>
         <Menu.Item onClick={() => navigate("./favourites", {replace:true})}>Favourites</Menu.Item>
         <Menu.Item onClick={() => navigate("./bookings", {replace:true})}>Bookings</Menu.Item>
-        <Menu.Label>Go Back</Menu.Label>
         <Menu.Item
           onClick={() => {
             localStorage.clear();
