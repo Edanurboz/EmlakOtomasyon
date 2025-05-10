@@ -18,9 +18,12 @@ import UserDetailContext from "../context/UserDetailContext";
 import { Button } from "@mantine/core";
 import { toast } from "react-toastify";
 import HeartBtn from "../components/HeartBtn";
+import CommentList from "../components/Comments/CommentList";
+import CommentForm from "../components/Comments/CommentForm";
 
 const Property = () => {
   const [modalOpened, setModalOpened] = useState(false);
+  const [commentKey, setCommentKey] = useState(0); // Yorum listesini yenilemek için key
   const {validateLogin} = useAuthCheck()
   const { pathname } = useLocation();
   const id = pathname.split("/").slice(-1)[0];
@@ -37,11 +40,14 @@ const Property = () => {
       setUserDetails((prev) => ({
         ...prev,
         bookings: prev.bookings.filter((booking) => booking?.id !== id),
-
       }))
       toast.success("Booking cancelled", {position: "bottom-right"})
     }
   })
+
+  const handleCommentAdded = () => {
+    setCommentKey(prev => prev + 1); // Yorum listesini yenilemek için key'i güncelle
+  };
 
   if (isLoading) {
     return (
@@ -163,6 +169,12 @@ const Property = () => {
             city={data?.city}
             country={data?.country}
           />
+        </div>
+
+        {/* Yorumlar Bölümü */}
+        <div className="mt-12">
+          <CommentForm residencyId={id} onCommentAdded={handleCommentAdded} />
+          <CommentList key={commentKey} residencyId={id} />
         </div>
       </div>
     </section>

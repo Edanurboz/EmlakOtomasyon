@@ -15,6 +15,7 @@ model User {
     bookedVisits     Json[]
     favResidenciesID String[]    @db.ObjectId
     ownedResidencies Residency[] @relation("Owner")
+    comments         Comment[]
 }
 
 model Residency {
@@ -31,6 +32,21 @@ model Residency {
     owner       User     @relation("Owner", fields: [userEmail], references: [email])
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
+    comments    Comment[]
 
     @@unique(fields:[address, userEmail])
+}
+
+model Comment {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    content     String
+    rating      Int      @default(0)
+    createdAt   DateTime @default(now())
+    userEmail   String
+    residencyId String   @db.ObjectId
+    user        User     @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+    residency   Residency @relation(fields: [residencyId], references: [id], onDelete: Cascade)
+    updatedAt   DateTime @updatedAt
+
+    @@unique([userEmail, residencyId])
 }
