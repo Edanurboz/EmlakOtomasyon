@@ -1,11 +1,14 @@
 import express from 'express';
-import { createComment, getCommentsByResidency, deleteComment } from '../controllers/commentController.js';
+import { createComment, getCommentsByResidency, deleteComment, getAllComments } from '../controllers/commentController.js';
 import jwtCheck from '../config/auth0Config.js';
 
 const router = express.Router();
 
 // Yorum ekleme
 router.post('/', jwtCheck, createComment);
+
+// Tüm yorumları getirme
+router.get('/', getAllComments);
 
 // Bir ev için tüm yorumları getirme
 router.get('/residency/:residencyId', getCommentsByResidency);

@@ -103,7 +103,7 @@ const CommentForm = ({ residencyId, onCommentAdded }) => {
             </div>
             <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                className="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary/90 transition-colors"
                 disabled={!content || rating === 0 || !isAuthenticated}
             >
                 {isAuthenticated ? 'Yorum Yap' : 'Yorum yapmak için giriş yapın'}

@@ -9,7 +9,6 @@ import {
   MdOutlineBed,
   MdOutlineGarage,
 } from "react-icons/md";
-import { CgRuler } from "react-icons/cg";
 import Map from "../components/Map";
 import useAuthCheck from "../hooks/useAuthCheck";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -20,16 +19,24 @@ import { toast } from "react-toastify";
 import HeartBtn from "../components/HeartBtn";
 import CommentList from "../components/Comments/CommentList";
 import CommentForm from "../components/Comments/CommentForm";
+import axios from "axios";
 
 const Property = () => {
   const [modalOpened, setModalOpened] = useState(false);
-  const [commentKey, setCommentKey] = useState(0); // Yorum listesini yenilemek için key
+  const [commentKey, setCommentKey] = useState(0);
   const {validateLogin} = useAuthCheck()
   const { pathname } = useLocation();
   const id = pathname.split("/").slice(-1)[0];
   const {user} = useAuth0();
 
   const { data, isLoading, isError } = useQuery(["resd", id], () => getProperty(id));
+  const { data: comments, isLoading: commentsLoading } = useQuery(
+    ["comments", id],
+    async () => {
+      const response = await axios.get(`http://localhost:3000/api/comments/residency/${id}`);
+      return response.data;
+    }
+  );
 
   const {userDetails: {token, bookings}, setUserDetails } = useContext(UserDetailContext)
 
@@ -46,10 +53,20 @@ const Property = () => {
   })
 
   const handleCommentAdded = () => {
-    setCommentKey(prev => prev + 1); // Yorum listesini yenilemek için key'i güncelle
+    setCommentKey(prev => prev + 1);
   };
 
-  if (isLoading) {
+  // Yorumlardan ortalama yıldız sayısını hesapla
+  const calculateAverageRating = () => {
+    if (!comments || comments.length === 0) return null;
+    
+    const totalRating = comments.reduce((sum, comment) => sum + (comment.rating || 0), 0);
+    return (totalRating / comments.length).toFixed(1);
+  };
+
+  const averageRating = calculateAverageRating();
+
+  if (isLoading || commentsLoading) {
     return (
       <div className="h-64 flexCenter">
         <PuffLoader
@@ -62,6 +79,7 @@ const Property = () => {
       </div>
     );
   }
+
   if (isError) {
     return (
       <div>
@@ -69,18 +87,25 @@ const Property = () => {
       </div>
     );
   }
+
   return (
     <section className="max-padd-container my-[99px]">
       {/* IMAGE */}
       <div className="pb-2 relative">
-        <img
-          src={data?.image}
-          alt={data?.title}
-          className="rounded-tr-3xl rounded-tl-3xl max-h-[27rem] w-full object-cover aspect-square"
-        />
+        {data?.image ? (
+          <img
+            src={data.image}
+            alt={data.title}
+            className="rounded-tr-3xl rounded-tl-3xl max-h-[27rem] w-full object-cover aspect-square"
+          />
+        ) : (
+          <div className="h-[27rem] bg-gray-100 flex items-center justify-center">
+            <p className="text-gray-500">No image available</p>
+          </div>
+        )}
         {/* LIKE BIN */}
-        <div className="absolute top-8 right-8">
-          <HeartBtn id ={id}/>
+        <div className="absolute top-8 right-8 z-10">
+          <HeartBtn id={id}/>
         </div>
       </div>
       {/* CONTAINER */}
@@ -95,18 +120,24 @@ const Property = () => {
           </div>
           <div className="flexBetween pt-3">
             <h4 className="bold-20 line-clamp-1">{data?.title}</h4>
-            <div className="bold-20">${data?.price}.00</div>
+            <div className="bold-20">${data?.price.toLocaleString()}</div>
           </div>
           <div className="flexBetween py-1">
             <h5 className="bold-16 my-1 text-secondary">{data?.city}</h5>
-            <div className="flex items-baseline gap-2 text-secondary">
-              <h4 className="bold-18 relative bottom-0.5 text-black">5.0</h4>
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStar />
-            </div>
+            {averageRating ? (
+              <div className="flex items-baseline gap-2 text-secondary">
+                <h4 className="bold-18 relative bottom-0.5 text-black">{averageRating}</h4>
+                {[...Array(5)].map((_, index) => (
+                  <FaStar 
+                    key={index}
+                    className={index < Math.round(averageRating) ? "text-yellow-400" : "text-gray-300"}
+                  />
+                ))}
+                <span className="text-sm text-gray-500">({comments.length} yorum)</span>
+              </div>
+            ) : (
+              <p className="text-gray-500 italic">Bu ev daha önce hiç yorumlanmamış</p>
+            )}
           </div>
           <div className="flex gap-x-4">
             <div className="flexCenter gap-x-2 border-r border-slate-900/50 pr-4 font-[500]">
@@ -115,11 +146,8 @@ const Property = () => {
             <div className="flexCenter gap-x-2 border-r border-slate-900/50 pr-4 font-[500]">
               <MdOutlineBathtub /> {data?.facilities.bathrooms}
             </div>
-            <div className="flexCenter gap-x-2 border-r border-slate-900/50 pr-4 font-[500]">
+            <div className="flexCenter gap-x-2 pr-4 font-[500]">
               <MdOutlineGarage /> {data?.facilities.parkings}
-            </div>
-            <div className="flexCenter gap-x-2 border-r border-slate-900/50 pr-4 font-[500]">
-              <CgRuler /> 400
             </div>
           </div>
           <h4 className="h4 mt-3">Property Details</h4>

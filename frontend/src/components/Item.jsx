@@ -1,11 +1,10 @@
 import React from 'react'
 import { FaHeart } from 'react-icons/fa';
 import { MdOutlineBathtub, MdOutlineBed, MdOutlineGarage } from 'react-icons/md';
-import { CgRuler } from 'react-icons/cg'
 import { useNavigate } from 'react-router-dom';
 import HeartBtn from './HeartBtn';
-const Item = ({property}) => {
 
+const Item = ({property}) => {
   const navigate = useNavigate();
 
   return (
@@ -31,14 +30,11 @@ const Item = ({property}) => {
                 <div className='flexCenter gap-x-2 border-r border-slate-900/50 pr-4 font-[500]'>
                     <MdOutlineBathtub /> {property.facilities.bathrooms}
                 </div>
-                <div className='flexCenter gap-x-2 border-r border-slate-900/50 pr-4 font-[500]'>
+                <div className='flexCenter gap-x-2 pr-4 font-[500]'>
                     <MdOutlineGarage /> {property.facilities.parkings}
                 </div>
-                <div className='flexCenter gap-x-2 border-r border-slate-900/50 pr-4 font-[500]'>
-                    <CgRuler /> 400
-                </div>
-                <p className='pt-2 mb-4 line-clamp-2 '>{property.description}</p>
             </div>
+            <p className='pt-2 mb-4 line-clamp-2'>{property.description}</p>
         </div>
     </div>
   )

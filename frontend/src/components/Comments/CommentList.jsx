@@ -107,7 +107,7 @@ const CommentList = ({ residencyId }) => {
                                 onClick={() => handleDelete(comment.id)}
                                 className="text-red-500 hover:text-red-700"
                             >
-                                <FaTrash />
+                                <FaTrash className="w-6 h-6" />
                             </button>
                         )}
                     </div>

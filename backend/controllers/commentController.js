@@ -175,8 +175,37 @@ const deleteComment = async (req, res) => {
     }
 };
 
+// Tüm yorumları getirme
+const getAllComments = async (req, res) => {
+    try {
+        const comments = await prisma.comment.findMany({
+            include: {
+                user: {
+                    select: {
+                        email: true
+                    }
+                },
+                residency: {
+                    select: {
+                        title: true,
+                        image: true
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+        res.json(comments);
+    } catch (error) {
+        console.error('Yorumlar getirilirken hata oluştu:', error);
+        res.status(500).json({ error: 'Yorumlar getirilirken bir hata oluştu' });
+    }
+};
+
 export {
     createComment,
     getCommentsByResidency,
-    deleteComment
+    deleteComment,
+    getAllComments
 }; 
