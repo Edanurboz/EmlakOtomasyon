@@ -3,31 +3,59 @@ import { prisma } from "../config/prismaConfig.js"
 
 
 export const createResidency = asyncHandler(async (req, res) => {
-    const { title, description, price, address, country, city, facilities, image, userEmail } = req.body.data || req.body
-
-    console.log(req.body.data)
     try {
+        const data = req.body.data || req.body;
+        console.log("Gelen veri:", data);
+
+        // Veri doğrulama
+        if (!data.title || !data.description || !data.price || !data.address || !data.country || !data.city || !data.image || !data.userEmail) {
+            return res.status(400).json({ message: "Gerekli alanlar eksik" });
+        }
+
+        // Veriyi hazırla - userEmail'i çıkar
+        const residencyData = {
+            title: data.title,
+            description: data.description,
+            price: parseInt(data.price),
+            address: data.address,
+            country: data.country,
+            city: data.city,
+            facilities: data.facilities,
+            image: data.image
+        };
+
+        // Opsiyonel resimleri ekle
+        if (data.image2) residencyData.image2 = data.image2;
+        if (data.image3) residencyData.image3 = data.image3;
+        if (data.image4) residencyData.image4 = data.image4;
+
+        console.log("Oluşturulacak veri:", residencyData);
+
         const residency = await prisma.residency.create({
             data: {
-                title,
-                description,
-                price,
-                address,
-                country,
-                city,
-                facilities,
-                image,
-                owner: { connect: { email: userEmail } }
+                ...residencyData,
+                owner: { connect: { email: data.userEmail } }
             }
-        })
-        res.send({ message: "Residency created successfully", residency })
+        });
+
+        console.log("Oluşturulan residency:", residency);
+        res.status(201).json({ message: "Residency created successfully", residency });
 
     } catch (err) {
-        if (err.code === "P2002") {
-            throw new Error("Already have a residency with this address")
-        }
-        throw new Error(err.message)
+        console.error("Hata detayı:", {
+            message: err.message,
+            code: err.code,
+            stack: err.stack
+        });
 
+        if (err.code === "P2002") {
+            return res.status(400).json({ message: "Already have a residency with this address" });
+        }
+
+        res.status(500).json({ 
+            message: "Bir hata oluştu", 
+            error: err.message 
+        });
     }
 })
 

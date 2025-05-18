@@ -137,7 +137,7 @@ export const getAllBookings = async (email, token) => {
 }
 export const createResidency = async (data, token, userEmail) => {
     const requestData = {...data, userEmail};
-    console.log(requestData);
+    console.log("Gönderilen veri:", requestData);
     try {
         const res = await api.post(`/residency/create`,
              requestData,
@@ -147,7 +147,38 @@ export const createResidency = async (data, token, userEmail) => {
                  }
              }
             )
+        
+        if (res.status === 201) {
+            return res.data;
+        }
+        
+        throw new Error(res.data.message || "Bir hata oluştu");
     } catch (e) {
-        throw e
+        console.error("Hata detayı:", {
+            message: e.message,
+            response: e.response?.data,
+            status: e.response?.status
+        });
+        
+        // Backend'den gelen hata mesajını kullan
+        const errorMessage = e.response?.data?.message || e.message || "Bir hata oluştu";
+        throw new Error(errorMessage);
     }
 }
+
+export const getResidencies = async ({ userEmail, token, searchParams }) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/api/residencies?${searchParams}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching residencies:", error);
+    throw error;
+  }
+};

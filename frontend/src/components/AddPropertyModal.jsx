@@ -18,6 +18,9 @@ const AddPropertyModal = ({ opened, setOpened }) => {
         city : "",
         address : "",
         image : null,
+        image2 : null,
+        image3 : null,
+        image4 : null,
         facilities : {
             bedrooms : 0,
             bathrooms : 0,

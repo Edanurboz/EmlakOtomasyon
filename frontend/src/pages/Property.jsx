@@ -20,6 +20,11 @@ import HeartBtn from "../components/HeartBtn";
 import CommentList from "../components/Comments/CommentList";
 import CommentForm from "../components/Comments/CommentForm";
 import axios from "axios";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const Property = () => {
   const [modalOpened, setModalOpened] = useState(false);
@@ -31,7 +36,7 @@ const Property = () => {
 
   const { data, isLoading, isError } = useQuery(["resd", id], () => getProperty(id));
   const { data: comments, isLoading: commentsLoading } = useQuery(
-    ["comments", id],
+    ["comments", id, commentKey],
     async () => {
       const response = await axios.get(`http://localhost:3000/api/comments/residency/${id}`);
       return response.data;
@@ -93,13 +98,52 @@ const Property = () => {
       {/* IMAGE */}
       <div className="pb-2 relative">
         {data?.image ? (
-          <img
-            src={data.image}
-            alt={data.title}
-            className="rounded-tr-3xl rounded-tl-3xl max-h-[27rem] w-full object-cover aspect-square"
-          />
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={0}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 3000 }}
+            className="w-full h-[1000px] rounded-tr-3xl rounded-tl-3xl overflow-hidden"
+          >
+            <SwiperSlide>
+              <img
+                src={data.image}
+                alt={data.title}
+                className="w-full h-full object-cover"
+              />
+            </SwiperSlide>
+            {data.image2 && (
+              <SwiperSlide>
+                <img
+                  src={data.image2}
+                  alt={data.title}
+                  className="w-full h-full object-cover"
+                />
+              </SwiperSlide>
+            )}
+            {data.image3 && (
+              <SwiperSlide>
+                <img
+                  src={data.image3}
+                  alt={data.title}
+                  className="w-full h-full object-cover"
+                />
+              </SwiperSlide>
+            )}
+            {data.image4 && (
+              <SwiperSlide>
+                <img
+                  src={data.image4}
+                  alt={data.title}
+                  className="w-full h-full object-cover"
+                />
+              </SwiperSlide>
+            )}
+          </Swiper>
         ) : (
-          <div className="h-[27rem] bg-gray-100 flex items-center justify-center">
+          <div className="h-[1000px] bg-gray-100 flex items-center justify-center rounded-tr-3xl rounded-tl-3xl">
             <p className="text-gray-500">No image available</p>
           </div>
         )}
@@ -202,7 +246,7 @@ const Property = () => {
         {/* Yorumlar Bölümü */}
         <div className="mt-12">
           <CommentForm residencyId={id} onCommentAdded={handleCommentAdded} />
-          <CommentList key={commentKey} residencyId={id} />
+          <CommentList key={commentKey} residencyId={id} onCommentDeleted={handleCommentAdded} />
         </div>
       </div>
     </section>

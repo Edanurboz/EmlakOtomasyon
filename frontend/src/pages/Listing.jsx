@@ -3,7 +3,7 @@ import Searchbar from "../components/Searchbar";
 import FilterBar from "../components/FilterBar";
 import useProperties from "../hooks/useProperties";
 import { PuffLoader } from "react-spinners"
-import Item from "../components/item";
+import Item from "../components/Item";
 
 const Listing = () => {
   const [filter, setFilter] = useState("");
@@ -62,12 +62,12 @@ const Listing = () => {
   if(isLoading){
     return (
       <div className="h-64 flexCenter">
-        <PuffLoader 
-        height = "80"
-        width = "80"
-        radius = {1}
-        color = "#555"
-        aria-label="puff-loading"
+        <PuffLoader
+          height = "80"
+          width = "80"
+          radius = {1}
+          color = "#555"
+          aria-label="puff-loading"
         />
       </div>
     )

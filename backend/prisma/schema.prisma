@@ -27,6 +27,9 @@ model Residency {
     city        String
     country     String
     image       String
+    image2      String?
+    image3      String?
+    image4      String?
     facilities  Json
     userEmail   String
     owner       User     @relation("Owner", fields: [userEmail], references: [email])

@@ -4,7 +4,7 @@ import { FaStar, FaTrash, FaUser, FaClock } from 'react-icons/fa';
 import { useAuth0 } from '@auth0/auth0-react';
 import { toast } from 'react-toastify';
 
-const CommentList = ({ residencyId }) => {
+const CommentList = ({ residencyId, onCommentDeleted }) => {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(true);
     const { getAccessTokenSilently, isAuthenticated, user } = useAuth0();
@@ -67,6 +67,9 @@ const CommentList = ({ residencyId }) => {
 
             toast.success('Yorum başarıyla silindi');
             fetchComments();
+            if (onCommentDeleted) {
+                onCommentDeleted();
+            }
         } catch (error) {
             console.error('Yorum silinirken hata oluştu:', error);
             if (error.response) {

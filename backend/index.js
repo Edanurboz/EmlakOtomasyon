@@ -16,8 +16,22 @@ app.use(cors())
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error('Hata:', err);
+    console.error('Hata detayı:', {
+        message: err.message,
+        stack: err.stack,
+        code: err.code
+    });
+    
+    // Prisma hataları için özel işleme
+    if (err.code?.startsWith('P')) {
+        return res.status(400).json({
+            message: "Veritabanı işlemi başarısız oldu",
+            error: err.message
+        });
+    }
+
     res.status(500).json({ 
+        message: "Bir hata oluştu",
         error: err.message,
         stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
     });

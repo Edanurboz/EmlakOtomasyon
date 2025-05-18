@@ -50,29 +50,47 @@ const Facilities = ({prevStep, propertyDetails, setPropertyDetails, setOpened, s
             token,
             user?.email
         ),
-        onError: ({ response }) =>
-            toast.error(response.data.message, { position: "bottom-right"}),
-        onSettled: () => {
-            toast.success("Added Succesfully", {position: "bottom-right"});
-            setPropertyDetails({
-                title: "",
-                description: "",
-                price: 0,
-                country: "",
-                city: "",
-                address: "",
-                image: null,
-                facilities: {
-                    bedrooms: 0,
-                    parkings: 0,
-                    bathrooms: 0,
-                },
-                userEmail: user?.email,
-            });
-            setOpened(false);
-            setActiveStep(0);
-            refetchProperties();
-        },
+    onError: (error) => {
+        console.error("Mutation error:", error);
+        toast.error(error.message || "Bir hata oluştu", { 
+            position: "bottom-right",
+            autoClose: 5000
+        });
+    },
+    onSuccess: (data) => {
+        console.log("Başarılı:", data);
+        toast.success("Mülk başarıyla eklendi", {
+            position: "bottom-right",
+            autoClose: 3000
+        });
+        
+        // State'i sıfırla
+        setPropertyDetails({
+            title: "",
+            description: "",
+            price: 0,
+            country: "",
+            city: "",
+            address: "",
+            image: null,
+            image2: null,
+            image3: null,
+            image4: null,
+            facilities: {
+                bedrooms: 0,
+                parkings: 0,
+                bathrooms: 0,
+            },
+            userEmail: user?.email,
+        });
+        
+        // UI'ı sıfırla
+        setOpened(false);
+        setActiveStep(0);
+        
+        // Listeyi yenile
+        refetchProperties();
+    }
   });
 
   return (
