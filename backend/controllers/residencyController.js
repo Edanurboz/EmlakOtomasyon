@@ -77,3 +77,12 @@ export const getResidency = asyncHandler(async(req,res)=>{
         throw new Error(err.message)
     }
 })
+
+export const getResidencyCount = asyncHandler(async (req, res) => {
+    try {
+        const count = await prisma.residency.count();
+        res.status(200).json({ count });
+    } catch (err) {
+        throw new Error(err.message);
+    }
+});

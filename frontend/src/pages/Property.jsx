@@ -164,7 +164,7 @@ const Property = () => {
           </div>
           <div className="flexBetween pt-3">
             <h4 className="bold-20 line-clamp-1">{data?.title}</h4>
-            <div className="bold-20">${data?.price.toLocaleString()}</div>
+            <div className="bold-20">₺{data?.price.toLocaleString()}</div>
           </div>
           <div className="flexBetween py-1">
             <h5 className="bold-16 my-1 text-secondary">{data?.city}</h5>
@@ -194,8 +194,25 @@ const Property = () => {
               <MdOutlineGarage /> {data?.facilities.parkings}
             </div>
           </div>
-          <h4 className="h4 mt-3">Property Details</h4>
+          <h4 className="h4 mt-3">Mülk Detayları</h4>
           <p className="mb-4">{data?.description}</p>
+          
+          {/* İlan Sahibi Bilgisi */}
+          <div className="bg-gradient-to-r from-primary/20 via-white to-white p-6 rounded-lg border border-secondary/20 mb-6">
+            <div className="flex items-center gap-4">
+              <div className="bg-secondary/10 p-3 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <div>
+                <h5 className="font-semibold text-lg text-secondary">İlan Sahibi</h5>
+                <p className="text-gray-600">{data?.userEmail}</p>
+                <p className="text-sm text-gray-500 mt-1">İletişim için yukarıdaki e-posta adresine mail atabilirsiniz.</p>
+              </div>
+            </div>
+          </div>
+
           <div className="flexBetween pt-7">
             {bookings?.map((booking) => booking.id).includes(id) ? (
               <>

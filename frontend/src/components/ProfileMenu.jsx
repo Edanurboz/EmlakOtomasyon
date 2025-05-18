@@ -12,8 +12,8 @@ const ProfileMenu = ({ user, logout }) => {
         <Avatar src={user?.picture} alt="userImg" radius={"xl"} />
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item onClick={() => navigate("./favourites", {replace:true})}>Favourites</Menu.Item>
-        <Menu.Item onClick={() => navigate("./bookings", {replace:true})}>Bookings</Menu.Item>
+        <Menu.Item onClick={() => navigate("./favourites", {replace:true})}>Favorilerim</Menu.Item>
+        <Menu.Item onClick={() => navigate("./bookings", {replace:true})}>Randevularım</Menu.Item>
         <Menu.Item
           onClick={() => {
             localStorage.clear();
@@ -21,7 +21,7 @@ const ProfileMenu = ({ user, logout }) => {
           }}
           color="red"
         >
-          logout
+          Çıkış Yap
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

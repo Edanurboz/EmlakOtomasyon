@@ -20,6 +20,10 @@ const Item = ({property}) => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
     };
 
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
     return (
         <div onClick={() => navigate(`../listing/${property.id}`)} className='rounded-lg overflow-hidden bg-white ring-1 ring-slate-900/5'>
             {/* IMAGE */}
@@ -43,7 +47,7 @@ const Item = ({property}) => {
             <div className='m-3'>
                 <div className='flexBetween'>
                     <h5 className='bold-16 my-1 text-secondary'>{property.city}</h5>
-                    <h4 className='h4'>${property.price}</h4>
+                    <h4 className='h4'>₺{formatPrice(property.price)}</h4>
                 </div>
                 <h4 className='medium-18 line-clamp-1'>{property.title}</h4>
                 <div className='flex gap-x-2 py-2'>

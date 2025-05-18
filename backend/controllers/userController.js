@@ -124,3 +124,12 @@ export const getAllFav = asyncHandler(async (req, res) => {
         throw new Error(err.message)
     }
 })
+
+export const getUserCount = asyncHandler(async (req, res) => {
+    try {
+        const count = await prisma.user.count();
+        res.status(200).json({ count });
+    } catch (err) {
+        throw new Error(err.message);
+    }
+});

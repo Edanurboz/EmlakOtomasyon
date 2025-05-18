@@ -203,9 +203,21 @@ const getAllComments = async (req, res) => {
     }
 };
 
+// Yorum sayısını getirme
+const getCommentCount = async (req, res) => {
+    try {
+        const count = await prisma.comment.count();
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error('Yorum sayısı alınırken hata oluştu:', error);
+        res.status(500).json({ error: 'Yorum sayısı alınırken bir hata oluştu' });
+    }
+};
+
 export {
     createComment,
     getCommentsByResidency,
     deleteComment,
-    getAllComments
+    getAllComments,
+    getCommentCount
 }; 

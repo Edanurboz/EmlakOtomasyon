@@ -7,24 +7,26 @@ import { toast } from 'react-toastify';
 import { Box, Button, Group, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { createResidency } from '../utils/api';
+import { validateString } from '../utils/common';
 
 const Facilities = ({prevStep, propertyDetails, setPropertyDetails, setOpened, setActiveStep}) => {
   const form = useForm({
     initialValues: {
-        title: propertyDetails.facilities.bedrooms,
-        description: propertyDetails.facilities.parkings,
-        price: propertyDetails.facilities.bathrooms,
+        bedrooms: propertyDetails?.facilities?.bedrooms,
+        bathrooms: propertyDetails?.facilities?.bathrooms,
+        parkings: propertyDetails?.facilities?.parkings,
     },
     validate: {
-        bedrooms: (value) => value < 1 ? "Must have at least one bedroom" : null,
-        bathrooms: (value) => value < 1 ? "Must have at least one bathroom" : null,
+        bedrooms: (value) => validateString(value),
+        bathrooms: (value) => validateString(value),
+        parkings: (value) => validateString(value),
     },
   });
   const { bedrooms, parkings, bathrooms} = form.values;
 
   const handleSubmit = () => {
-    const { hasErrors } = form.validate();
-    if (!hasErrors) {
+    const { hasError } = form.validate();
+    if (!hasError) {
         setPropertyDetails((prev) => ({
             ...prev,
             facilities: {bedrooms, parkings, bathrooms},
@@ -101,30 +103,41 @@ const Facilities = ({prevStep, propertyDetails, setPropertyDetails, setOpened, s
             handleSubmit();
         }}
         >
-            <NumberInput 
-            withAsterisk
-            label = "No of Bedrooms"
-            min={0}
-            {...form.getInputProps("bedrooms")}
-            />
-            <NumberInput 
-            withAsterisk
-            label = "No of parkings"
-            min={0}
-            {...form.getInputProps("parkings")}
-            />
-            <NumberInput 
-            withAsterisk
-            label = "No of Bathrooms"
-            min={0}
-            {...form.getInputProps("bathrooms")}
-            />
+            <div className='flexCenter'>
+                {/* LEFT SIDE  */}
+                <div className='flexCenter flex-1'>
+                    {/* INPUTS */}
+                    <div>
+                        <NumberInput 
+                        w={"100%"}
+                        withAsterisk
+                        label = "Yatak Odası"
+                        min={0}
+                        {...form.getInputProps("bedrooms", { type: "input"})}
+                        />
+                        <NumberInput 
+                        w={"100%"}
+                        withAsterisk
+                        label = "Banyo"
+                        min={0}
+                        {...form.getInputProps("bathrooms", { type: "input"})}
+                        />
+                        <NumberInput 
+                        w={"100%"}
+                        withAsterisk
+                        label = "Otopark"
+                        min={0}
+                        {...form.getInputProps("parkings", { type: "input"})}
+                        />
+                    </div>
+                </div>
+            </div>
             <Group position="center" mt="xl">
                 <Button variant='default' onClick={prevStep}>
-                    Back
+                    Geri
                 </Button>
                 <Button type='submit' color='green' disabled={isLoading}>
-                    {isLoading ? "Submitting" : "Add Property"}
+                    {isLoading ? "Submitting" : "Kaydet"}
                 </Button>
             </Group>
         </form>

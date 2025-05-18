@@ -14,16 +14,16 @@ const handleAddPropertyClick = () => {
   return (
     <nav className={`${containerStyles}`}>
         <NavLink to={'/'} className={({isActive}) => isActive ? 'active-link py-1' : 'py-1'}>
-            Home
+            Ana Sayfa
         </NavLink>
         <NavLink to={'/listing'} className={({isActive}) => isActive ? 'active-link py-1' : 'py-1'}>
-            Listing
+            İlanlar
         </NavLink>
-        <NavLink to={'mailto:info@abc.com'} className={({isActive}) => isActive ? 'active-link py-1' : 'py-1'}>
-            Contact
+        <NavLink to={'mailto:info@emlakotomasyon.com'} className={({isActive}) => isActive ? 'active-link py-1' : 'py-1'}>
+            İletişim
         </NavLink>
         <div onClick={handleAddPropertyClick} className={'py-1 cursor-pointer'}>
-            Add Property
+            İlan Ekle
         </div>
         <AddPropertyModal opened ={modalOpened} setOpened={setmodalOpened}/>
     </nav>

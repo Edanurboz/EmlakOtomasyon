@@ -8,7 +8,7 @@ const Searchbar = ({ filter, setFilter }) => {
         type="text"
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
-        placeholder="Enter residency name/city/country"
+        placeholder="İlan adı/şehir/ülke giriniz"
         className="bg-transparent border-none outline-none w-full"
       />
       <FaLocationDot className="relative right-4 text-xl hover:text-secondary cursor-pointer" />

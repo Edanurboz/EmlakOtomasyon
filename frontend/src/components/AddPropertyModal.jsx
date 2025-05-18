@@ -47,14 +47,14 @@ const AddPropertyModal = ({ opened, setOpened }) => {
       <Container h={"34rem"} w={"100%"}>
         <>
           <Stepper active={active} onStepClick={setActive}>
-            <Stepper.Step label="Location" description="Address">
+            <Stepper.Step label="Konum" description="Adres">
               <AddLocation 
               nextStep ={nextStep}
               propertyDetails = {propertyDetails}
               setPropertyDetails = {setPropertyDetails}
               />
             </Stepper.Step>
-            <Stepper.Step label="Image" description="Upload">
+            <Stepper.Step label="Görsel" description="Yükle">
             <UploadImage
               prevStep ={prevStep} 
               nextStep ={nextStep}
@@ -62,7 +62,7 @@ const AddPropertyModal = ({ opened, setOpened }) => {
               setPropertyDetails = {setPropertyDetails}
               />
             </Stepper.Step>
-            <Stepper.Step label="Basics" description="Details">
+            <Stepper.Step label="Temel" description="Detaylar">
               <BasicDetails
               prevStep ={prevStep} 
               nextStep ={nextStep}
@@ -70,7 +70,7 @@ const AddPropertyModal = ({ opened, setOpened }) => {
               setPropertyDetails = {setPropertyDetails}
                />
             </Stepper.Step>
-            <Stepper.Step>
+            <Stepper.Step label="Özellikler" description="Olanaklar">
               <Facilities
               prevStep ={prevStep} 
               propertyDetails = {propertyDetails}
@@ -80,7 +80,7 @@ const AddPropertyModal = ({ opened, setOpened }) => {
                />
             </Stepper.Step>
             <Stepper.Completed>
-              Completed, click back button to get to previous step
+              Tamamlandı, önceki adıma dönmek için geri butonuna tıklayın
             </Stepper.Completed>
           </Stepper>
         </>

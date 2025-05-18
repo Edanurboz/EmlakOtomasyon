@@ -43,7 +43,7 @@ const AddLocation = ({propertyDetails, setPropertyDetails, nextStep}) => {
                     <Select
                     w={"100%"}
                     withAsterisk
-                    label = "Country"
+                    label = "Ülke"
                     clearable
                     searchable
                     data={getAll()}
@@ -52,13 +52,13 @@ const AddLocation = ({propertyDetails, setPropertyDetails, nextStep}) => {
                     <TextInput 
                     w={"100%"}
                     withAsterisk
-                    label = "City"
+                    label = "Şehir"
                     {...form.getInputProps("city", { type: "input"})}
                     />
                     <TextInput 
                     w={"100%"}
                     withAsterisk
-                    label = "Address"
+                    label = "Adres"
                     {...form.getInputProps("address", { type: "input"})}
                     />
                 </div>
@@ -69,7 +69,7 @@ const AddLocation = ({propertyDetails, setPropertyDetails, nextStep}) => {
             </div>
         </div>
         <Group justify='center' mt={'xl'} >
-            <Button type='submit'>Next Step</Button>
+            <Button type='submit'>Sonraki Adım</Button>
         </Group>
     </form>
   )

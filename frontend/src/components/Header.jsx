@@ -73,7 +73,7 @@ const Header = () => {
           )}
           {!isAuthenticated ? <button onClick={loginWithRedirect} className="flexCenter gap-x-2 !px-5 btn-dark">
             <LuUserRound className="text-xl" />
-            <span>Log In</span>
+            <span>Giriş Yap</span>
           </button>: 
           <ProfileMenu user={user} logout={logout}/>
           }

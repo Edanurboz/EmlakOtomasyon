@@ -1,83 +1,83 @@
 import React from 'react'
 import about1 from '../assets/about1.png'
 import about2 from '../assets/about2.png'
-import { FaScreenpal, FaUpDown} from 'react-icons/fa6'
-import { FaEnvelope, FaInbox, FaList, FaMap, FaMapMarkedAlt, FaUser} from 'react-icons/fa'
-
+import { FaHome, FaBuilding, FaChartLine, FaUserTie, FaHandshake, FaSearch } from 'react-icons/fa'
+import { FaCalendarAlt, FaComments, FaHeart, FaMapMarkerAlt, FaShieldAlt } from 'react-icons/fa'
 
 const About = () => {
   return (
     <section className='max-padd-container pb-16 xl:pb-28'>
       <div className='flex items-center flex-col lg:flex-row gap-12'>
-        {/* IMAGE - LEFT SIDE */}
+        {/* SOL TARAF - RESİM */}
         <div className='flex-1'>
           <div className='relative'>
-            <img src={about1} alt="AboutImg" className='rounded-3xl'/>
-            <span className='absolute top-8 left-8 bg-white px-2 rounded-full medium-14'>San Francisco</span>
+            <img src={about1} alt="Emlak Otomasyon" className='rounded-3xl'/>
+            <span className='absolute top-8 left-8 bg-white px-2 rounded-full medium-14'>Emlak Danışmanları</span>
           </div>
         </div>
-        {/* INFO - RIGHT SIDE */}
+        {/* SAĞ TARAF - BİLGİLER */}
         <div className='flex-1'>
-          <h2 className='h2'>Empowering You to Find Your Dream Home, Effortlessly</h2>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. In laborum necessitatibus quidem dolorum temporibus excepturi!</p>
+          <h2 className='h2'>Emlak Danışmanları İçin Profesyonel Çözümler</h2>
+          <p>EmlakOtomasyon, emlak danışmanlarının işlerini kolaylaştırmak ve müşterilerine daha iyi hizmet sunmalarını sağlamak için tasarlanmış kapsamlı bir platformdur. İlan yönetimi, müşteri takibi ve raporlama özellikleriyle işinizi büyütün.</p>
           <div className='flex flex-col gap-6 mt-5'>
             <div className='flex gap-3'>
-              <FaScreenpal className='text-secondary'/>
-              <p>Virtual property tours and viewings</p>
+              <FaHome className='text-secondary'/>
+              <p>Kolay İlan Yönetimi ve Düzenleme</p>
             </div>
             <div className='flex gap-3'>
-              <FaUpDown className='text-secondary'/>
-              <p>Real-time market price updates</p>
+              <FaChartLine className='text-secondary'/>
+              <p>Müşteri Görüşme Takibi</p>
             </div>
             <div className='flex gap-3'>
-              <FaMap className='text-secondary'/>
-              <p>Interactive floor plans and maps</p>
+              <FaUserTie className='text-secondary'/>
+              <p>Müşteri Bilgileri ve İletişim Geçmişi</p>
             </div>
             <div className='flex gap-3'>
-              <FaMapMarkedAlt className='text-secondary'/>
-              <p>Access to off-market properties</p>
+              <FaHandshake className='text-secondary'/>
+              <p>Randevu ve Görüntüleme Takibi</p>
             </div>
             <div className='flex gap-3'>
-              <FaEnvelope className='text-secondary'/>
-              <p>Direct messaging with agents and owners</p>
+              <FaBuilding className='text-secondary'/>
+              <p>İlan Durumu ve Fiyat Güncellemeleri</p>
             </div>
           </div>
         </div>
       </div>
-      {/* SECOND CONTAINER */}
-      <div className='flex items-center flex-col lg:flex-row gap-12 mt-36'>
-        {/* INFO - LEFT SIDE */}
+
+      {/* İKİNCİ BÖLÜM */}
+      <div className='flex items-center flex-col lg:flex-row gap-12 mt-20'>
+        {/* SOL TARAF - BİLGİLER */}
         <div className='flex-1'>
-          <h2 className='h2'>Simplifying Your Real Estate Journey Every Step of the Way</h2>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. In laborum necessitatibus quidem dolorum temporibus excepturi!</p>
+          <h2 className='h2'>Müşteriler İçin Akıllı Emlak Deneyimi</h2>
+          <p>EmlakOtomasyon ile hayalinizdeki evi bulmak artık çok daha kolay. Gelişmiş arama özellikleri, detaylı filtreleme seçenekleri ve güvenilir emlak danışmanlarıyla tanışma fırsatı sunuyoruz.</p>
           <div className='flex flex-col gap-6 mt-5'>
             <div className='flex gap-3'>
-              <FaList className='text-secondary'/>
-              <p>In-app scheduling for property viewings</p>
+              <FaSearch className='text-secondary'/>
+              <p>Detaylı Arama ve Filtreleme</p>
             </div>
             <div className='flex gap-3'>
-              <FaUpDown className='text-secondary'/>
-              <p>Real-time market price updates</p>
+              <FaCalendarAlt className='text-secondary'/>
+              <p>Online Randevu Sistemi</p>
             </div>
             <div className='flex gap-3'>
-              <FaInbox className='text-secondary'/>
-              <p>User-friendly interface for smooth navigation</p>
+              <FaHeart className='text-secondary'/>
+              <p>Favori İlanları Kaydetme</p>
             </div>
             <div className='flex gap-3'>
-              <FaUser className='text-secondary'/>
-              <p>Detailed agent for realtor profiles</p>
+              <FaComments className='text-secondary'/>
+              <p>Emlak Danışmanlarıyla İletişim</p>
             </div>
             <div className='flex gap-3'>
-              <FaMapMarkedAlt className='text-secondary'/>
-              <p>Access to off-market properties</p>
+              <FaShieldAlt className='text-secondary'/>
+              <p>Güvenli ve Şeffaf İşlemler</p>
             </div>
           </div>
         </div>
-        {/* IMAGE - RIGHT SIDE */}
+        {/* SAĞ TARAF - RESİM */}
         <div className='flex-1'>
-          <div className='relative flex justify-end'>
-            <img src={about2} alt="AboutImg" className='rounded-3xl'/>
-            <span className='absolute top-8 right-8 bg-white px-2 rounded-full medium-14'>Golden Coast</span>
+          <div className='relative'>
+            <img src={about2} alt="Müşteri Hizmetleri" className='rounded-3xl'/>
+            <span className='absolute top-8 left-8 bg-white px-2 rounded-full medium-14'>Müşteriler</span>
           </div>
         </div>
       </div>
