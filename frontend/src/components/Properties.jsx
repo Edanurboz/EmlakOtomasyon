@@ -6,9 +6,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { PROPERTIES } from "../constant/data";
-import Item from "./Item";
 import useProperties from "../hooks/useProperties";
 import { PuffLoader } from "react-spinners";
+import Item from "./item";
 
 const Properties = () => {
   const { data, isError, isLoading } = useProperties();

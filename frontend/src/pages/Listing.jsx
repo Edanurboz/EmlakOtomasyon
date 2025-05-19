@@ -3,7 +3,7 @@ import Searchbar from "../components/Searchbar";
 import FilterBar from "../components/FilterBar";
 import useProperties from "../hooks/useProperties";
 import { PuffLoader } from "react-spinners"
-import Item from "../components/Item";
+import Item from "../components/item";
 
 const Listing = () => {
   const [filter, setFilter] = useState("");
