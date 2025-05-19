@@ -86,3 +86,90 @@ export const getResidencyCount = asyncHandler(async (req, res) => {
         throw new Error(err.message);
     }
 });
+
+export const getUserListings = asyncHandler(async (req, res) => {
+    const { email } = req.params;
+    try {
+        const listings = await prisma.residency.findMany({
+            where: { userEmail: email },
+            orderBy: {
+                createdAt: "desc"
+            }
+        });
+        res.status(200).json(listings);
+    } catch (err) {
+        throw new Error(err.message);
+    }
+});
+
+export const updateResidency = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { email } = req.body;
+    const updateData = req.body;
+
+    try {
+        // Önce ilanın kullanıcıya ait olup olmadığını kontrol et
+        const residency = await prisma.residency.findUnique({
+            where: { id }
+        });
+
+        if (!residency) {
+            return res.status(404).json({ message: "İlan bulunamadı" });
+        }
+
+        if (residency.userEmail !== email) {
+            return res.status(403).json({ message: "Bu ilanı güncelleme yetkiniz yok" });
+        }
+
+        // İlanı güncelle
+        const updatedResidency = await prisma.residency.update({
+            where: { id },
+            data: {
+                title: updateData.title,
+                description: updateData.description,
+                price: parseInt(updateData.price),
+                address: updateData.address,
+                country: updateData.country,
+                city: updateData.city,
+                facilities: updateData.facilities,
+                image: updateData.image,
+                image2: updateData.image2,
+                image3: updateData.image3,
+                image4: updateData.image4
+            }
+        });
+
+        res.status(200).json({ message: "İlan başarıyla güncellendi", residency: updatedResidency });
+    } catch (err) {
+        throw new Error(err.message);
+    }
+});
+
+export const deleteResidency = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { email } = req.body;
+
+    try {
+        // Önce ilanın kullanıcıya ait olup olmadığını kontrol et
+        const residency = await prisma.residency.findUnique({
+            where: { id }
+        });
+
+        if (!residency) {
+            return res.status(404).json({ message: "İlan bulunamadı" });
+        }
+
+        if (residency.userEmail !== email) {
+            return res.status(403).json({ message: "Bu ilanı silme yetkiniz yok" });
+        }
+
+        // İlanı sil
+        await prisma.residency.delete({
+            where: { id }
+        });
+
+        res.status(200).json({ message: "İlan başarıyla silindi" });
+    } catch (err) {
+        throw new Error(err.message);
+    }
+});

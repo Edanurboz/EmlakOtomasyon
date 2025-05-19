@@ -29,13 +29,11 @@ const Hero = () => {
         <p className="my-5 max-w-[33rem]">
           Size en uygun mülkü bulmak için doğru yerdesiniz. Binlerce seçenek arasından size en uygun olanı seçin.
         </p>
-        {/* BUTTON */}
         <div className="inline-flex items-center justify-center gap-4 bg-white rounded ring-1 ring-slate-900/5 mt-4">
           <Link to={'/listing'} className="btn-dark !rounded-lg">Keşfet</Link>
         </div>
         <div className="flex flex-col gap-4 mt-10 mb-4 max-w-64">
           <div className="flex relative">
-            {/* CLIENT IMAGE */}
             <img src={client1} alt="" className="h-[46px] border-2 border-white shadow-sm rounded-full " />
             <img src={client2} alt="" className="h-[46px] border-2 border-white shadow-sm rounded-full absolute left-8" />
             <img src={client3} alt="" className="h-[46px] border-2 border-white shadow-sm rounded-full absolute left-16" />

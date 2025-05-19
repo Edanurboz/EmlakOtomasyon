@@ -182,3 +182,52 @@ export const getResidencies = async ({ userEmail, token, searchParams }) => {
     throw error;
   }
 };
+
+export const getUserListings = async (email, token) => {
+    if(!token) return
+    try {
+        const res = await api.get(`/residency/user/${email}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        return res.data
+    } catch (error) {
+        toast.error("Something went wrong while fetching your listings");
+        throw error
+    }
+}
+
+export const updateResidency = async (id, data, email, token) => {
+    if(!token) return
+    try {
+        const res = await api.put(`/residency/${id}`, 
+            { ...data, email },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }
+        )
+        return res.data
+    } catch (error) {
+        toast.error("İlan güncellenirken bir hata oluştu");
+        throw error
+    }
+}
+
+export const deleteResidency = async (id, email, token) => {
+    if(!token) return
+    try {
+        const res = await api.delete(`/residency/${id}`, {
+            data: { email },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        return res.data
+    } catch (error) {
+        toast.error("İlan silinirken bir hata oluştu");
+        throw error
+    }
+}

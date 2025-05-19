@@ -6,6 +6,7 @@ import Property from "./pages/Property";
 import Listing from "./pages/Listing";
 import Bookings from "./pages/Bookings";
 import Favourites from "./pages/Favourites";
+import MyListings from "./pages/MyListings";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
 import {ReactQueryDevtools} from 'react-query/devtools';
@@ -16,7 +17,8 @@ const App = () => {
   const queryClient = new QueryClient();
   const [userDetails, setUserDetails] = useState({
     favourites: [],
-    bookings : [],
+    bookings: [],
+    listings: [],
     token: null
   })
 
@@ -34,6 +36,7 @@ const App = () => {
               </Route>
               <Route path="/bookings" element={<Bookings />} />
               <Route path="/favourites" element={<Favourites />} />
+              <Route path="/my-listings" element={<MyListings />} />
             </Route>
           </Routes>
         </Suspense>

@@ -8,17 +8,19 @@ import { createUser } from "../utils/api";
 import UserDetailContext from "../context/UserDetailContext";
 import useFavourites from "../hooks/useFavourites";
 import useBookings from "../hooks/useBookings";
+import useListings from "../hooks/useListings";
+
 const Layout = () => {
+  useFavourites();
+  useBookings();
+  useListings();
 
-  useFavourites()
-  useBookings()
-
-  const {isAuthenticated, user, getAccessTokenWithPopup } = useAuth0()
-  const {setUserDetails} = useContext(UserDetailContext)
+  const {isAuthenticated, user, getAccessTokenWithPopup } = useAuth0();
+  const {setUserDetails} = useContext(UserDetailContext);
   const {mutate} = useMutation({
     mutationKey: [user?.email],
     mutationFn: (token) => createUser(user?.email, token)
-  })
+  });
 
   useEffect(() => {
     const getTokenAndRegister = async()=>{
@@ -34,6 +36,7 @@ const Layout = () => {
     }
     isAuthenticated && getTokenAndRegister()
   }, [isAuthenticated])
+
   return (
     <>
       <div>

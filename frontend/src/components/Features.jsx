@@ -24,8 +24,8 @@ const Features = () => {
       case 'listings':
         navigate('/listing')
         break
-      case 'search':
-        navigate('/listing')
+      case 'my-listings':
+        navigate('/my-listings')
         break
       case 'favorites':
         navigate('/favourites')
@@ -51,10 +51,10 @@ const Features = () => {
             </div>
             <div 
               className='flex items-start gap-x-3 cursor-pointer hover:text-secondary transition-colors duration-300'
-              onClick={() => handleFeatureClick('search')}
+              onClick={() => handleFeatureClick('my-listings')}
             >
-                <AiOutlineFileSearch className='text-3xl'/>
-                <h4 className='medium-18'>Mülk Ara</h4>
+                <FaListAlt className='text-3xl'/>
+                <h4 className='medium-18'>İlanlarım</h4>
             </div>
             <div 
               className='flex items-start gap-x-3 cursor-pointer hover:text-secondary transition-colors duration-300'
