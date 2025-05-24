@@ -223,11 +223,11 @@ const Property = () => {
                    color="red"
                    disabled={cancelling}
                 >
-                   Cancel Booking
+                   Rezervasyonu iptal et
                 </Button>
                 <p className="text-red-500 medium-15 ml-3">
-                  You've already Booked visit for {bookings?.filter
-                  ((booking) => booking?.id === id)[0].date}
+                {bookings?.filter
+                  ((booking) => booking?.id === id)[0].date} tarihi için rezervasyon yaptırdınız.
                 </p>
               </>
             ) : (
@@ -239,7 +239,7 @@ const Property = () => {
               w={"20%"}
               color="black"
               >
-              Book visit
+              Rezervasyon Yaptır
             </Button>
             )
             }
