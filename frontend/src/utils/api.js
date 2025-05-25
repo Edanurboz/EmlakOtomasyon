@@ -51,12 +51,13 @@ export const createUser = async(email, token) => {
     }
 }
 
-export const bookVisit = async(date, propertyId, email, token) => {
+export const bookVisit = async(dateRange, propertyId, email, token) => {
     try {
         await api.post(`/user/bookVisit/${propertyId}`, {
             email,
             id: propertyId,
-            date: dayjs(date).format("DD/MM/YYYY"),
+            startDate: dayjs(dateRange[0]).format("DD/MM/YYYY"),
+            endDate: dayjs(dateRange[1]).format("DD/MM/YYYY"),
         },
         {
             headers:{
@@ -228,6 +229,16 @@ export const deleteResidency = async (id, email, token) => {
         return res.data
     } catch (error) {
         toast.error("İlan silinirken bir hata oluştu");
+        throw error
+    }
+}
+
+export const getPropertyBookings = async (propertyId) => {
+    try {
+        const res = await api.get(`/user/propertyBookings/${propertyId}`)
+        return res.data
+    } catch (error) {
+        toast.error("Something went wrong while fetching property bookings")
         throw error
     }
 }

@@ -1,5 +1,5 @@
 import express from "express";
-import { bookVisit, cancelBooking, createUser, getallBookings, getAllFav, toFav, getUserCount } from "../controllers/userController.js";
+import { bookVisit, cancelBooking, createUser, getallBookings, getAllFav, toFav, getUserCount, getPropertyBookings } from "../controllers/userController.js";
 import jwtCheck from "../config/auth0Config.js";
 
 const router = express.Router();
@@ -12,5 +12,7 @@ router.post("/allBookings", getallBookings);
 router.post("/removeBooking/:id", jwtCheck, cancelBooking);
 router.post("/toFav/:rid", jwtCheck, toFav);
 router.post("/allFav", jwtCheck, getAllFav);
+
+router.get("/propertyBookings/:id", getPropertyBookings);
 
 export { router as userRoute };

@@ -17,25 +17,57 @@ export const createUser = asyncHandler(async (req, res) => {
 })
 
 export const bookVisit = asyncHandler(async (req, res) => {
-    const { email, date } = req.body
+    const { email, startDate, endDate } = req.body
     const { id } = req.params
     try {
-        const alreadyBooked = await prisma.user.findUnique({
+        // Check if user already has a booking for this property
+        const user = await prisma.user.findUnique({
             where: { email: email },
             select: { bookedVisits: true }
         })
-        if (alreadyBooked.bookedVisits.some((visit) => visit.id === id)) {
-            res.status(400).json({ message: "This residency is already booked by you" })
+
+        if (user.bookedVisits.some((visit) => visit.id === id)) {
+            return res.status(400).json({ message: "Bu mülk için zaten bir rezervasyonunuz bulunmaktadır" })
         }
-        else {
-            await prisma.user.update({
-                where: { email: email },
-                data: {
-                    bookedVisits: { push: { id, date } }
+
+        // Check if the date range overlaps with any existing bookings
+        const allUsers = await prisma.user.findMany({
+            select: { bookedVisits: true }
+        })
+
+        const hasOverlap = allUsers.some(user => 
+            user.bookedVisits.some(visit => {
+                if (visit.id === id) {
+                    const existingStart = new Date(visit.startDate.split('/').reverse().join('-'))
+                    const existingEnd = new Date(visit.endDate.split('/').reverse().join('-'))
+                    const newStart = new Date(startDate.split('/').reverse().join('-'))
+                    const newEnd = new Date(endDate.split('/').reverse().join('-'))
+
+                    return (newStart <= existingEnd && newEnd >= existingStart)
                 }
+                return false
             })
+        )
+
+        if (hasOverlap) {
+            return res.status(400).json({ message: "Seçtiğiniz tarih aralığı başka bir kullanıcı tarafından rezerve edilmiş" })
         }
-        res.send("Your visit is booked successfully")
+
+        // Add the new booking
+        await prisma.user.update({
+            where: { email: email },
+            data: {
+                bookedVisits: { 
+                    push: { 
+                        id, 
+                        startDate,
+                        endDate 
+                    } 
+                }
+            }
+        })
+
+        res.send("Rezervasyonunuz başarıyla oluşturuldu")
     } catch (err) {
         throw new Error(err.message)
     }
@@ -64,7 +96,7 @@ export const cancelBooking = asyncHandler(async (req, res) => {
         })
         const index = user.bookedVisits.findIndex((visit) => visit.id === id)
         if (index === -1) {
-            res.status(404).json({ message: "Booking not found!" })
+            res.status(404).json({ message: "Rezervasyon bulunamadı!" })
         } else {
             user.bookedVisits.splice(index, 1)
             await prisma.user.update({
@@ -73,7 +105,7 @@ export const cancelBooking = asyncHandler(async (req, res) => {
                     bookedVisits: user.bookedVisits
                 }
             })
-            res.send("Booking canceled successfully")
+            res.send("Rezervasyon başarıyla iptal edildi")
         }
     } catch (err) {
         throw new Error(err.message)
@@ -133,3 +165,21 @@ export const getUserCount = asyncHandler(async (req, res) => {
         throw new Error(err.message);
     }
 });
+
+export const getPropertyBookings = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    try {
+        const allUsers = await prisma.user.findMany({
+            select: { bookedVisits: true }
+        })
+
+        const propertyBookings = allUsers.reduce((acc, user) => {
+            const userBookings = user.bookedVisits.filter(visit => visit.id === id)
+            return [...acc, ...userBookings]
+        }, [])
+
+        res.status(200).json(propertyBookings)
+    } catch (err) {
+        throw new Error(err.message)
+    }
+})

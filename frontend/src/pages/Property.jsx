@@ -227,7 +227,8 @@ const Property = () => {
                 </Button>
                 <p className="text-red-500 medium-15 ml-3">
                 {bookings?.filter
-                  ((booking) => booking?.id === id)[0].date} tarihi için rezervasyon yaptırdınız.
+                  ((booking) => booking?.id === id)[0].startDate} - {bookings?.filter
+                  ((booking) => booking?.id === id)[0].endDate} tarihleri için rezervasyon yaptırdınız.
                 </p>
               </>
             ) : (
