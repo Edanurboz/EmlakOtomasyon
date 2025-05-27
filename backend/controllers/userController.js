@@ -170,11 +170,19 @@ export const getPropertyBookings = asyncHandler(async (req, res) => {
     const { id } = req.params
     try {
         const allUsers = await prisma.user.findMany({
-            select: { bookedVisits: true }
+            select: { 
+                email: true,
+                bookedVisits: true 
+            }
         })
 
         const propertyBookings = allUsers.reduce((acc, user) => {
-            const userBookings = user.bookedVisits.filter(visit => visit.id === id)
+            const userBookings = user.bookedVisits
+                .filter(visit => visit.id === id)
+                .map(visit => ({
+                    ...visit,
+                    userEmail: user.email
+                }))
             return [...acc, ...userBookings]
         }, [])
 

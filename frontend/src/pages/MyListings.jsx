@@ -5,21 +5,29 @@ import { PuffLoader } from "react-spinners"
 import Item from "../components/item";
 import UserDetailContext from "../context/UserDetailContext";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMutation, useQueryClient } from "react-query";
-import { deleteResidency, updateResidency } from "../utils/api";
+import { useMutation, useQueryClient, useQuery } from "react-query";
+import { deleteResidency, updateResidency, getPropertyBookings } from "../utils/api";
 import { toast } from "react-toastify";
-import { Button, Modal, TextInput, Textarea, NumberInput, Select, Alert } from "@mantine/core";
+import { Button, Modal, TextInput, Textarea, NumberInput, Select, Alert, Table } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 const MyListings = () => {
   const [filter, setFilter] = useState("");
   const [editModalOpened, setEditModalOpened] = useState(false);
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
+  const [reservationsModalOpened, setReservationsModalOpened] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const { data, isError, isLoading, refetch } = useProperties();
   const {userDetails: {listings, token}, setUserDetails} = useContext(UserDetailContext);
   const {user} = useAuth0();
   const queryClient = useQueryClient();
+
+  // Fetch reservations for the selected property
+  const { data: propertyReservations } = useQuery({
+    queryKey: ['propertyReservations', selectedProperty?.id],
+    queryFn: () => getPropertyBookings(selectedProperty?.id),
+    enabled: !!selectedProperty?.id && reservationsModalOpened
+  });
 
   const form = useForm({
     initialValues: {
@@ -78,6 +86,11 @@ const MyListings = () => {
     setEditModalOpened(true);
   };
 
+  const handleShowReservations = (property) => {
+    setSelectedProperty(property);
+    setReservationsModalOpened(true);
+  };
+
   if(isError){
     return(
       <div>
@@ -129,6 +142,13 @@ const MyListings = () => {
                     onClick={() => handleDelete(property.id)}
                   >
                     Sil
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    color="green" 
+                    onClick={() => handleShowReservations(property)}
+                  >
+                    Rezervasyonlar
                   </Button>
                 </div>
               </div>
@@ -237,6 +257,70 @@ const MyListings = () => {
             Sil
           </Button>
         </div>
+      </Modal>
+
+      {/* Reservations Modal */}
+      <Modal
+        opened={reservationsModalOpened}
+        onClose={() => setReservationsModalOpened(false)}
+        title={
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-semibold text-tertiary">{selectedProperty?.title}</span>
+            <span className="text-sm text-gray-30">- Rezervasyonlar</span>
+          </div>
+        }
+        size="lg"
+        classNames={{
+          title: "text-xl font-semibold",
+          header: "border-b border-gray-10 pb-4",
+          body: "pt-4"
+        }}
+      >
+        {propertyReservations && propertyReservations.length > 0 ? (
+          <div className="space-y-4">
+            <div className="bg-primary p-4 rounded-lg">
+              <p className="text-sm text-tertiary">
+                Bu ilan için toplam {propertyReservations.length} rezervasyon bulunmaktadır.
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <Table striped highlightOnHover>
+                <thead>
+                  <tr>
+                    <th className="bg-primary text-tertiary text-left py-3 px-4">Kullanıcı E-postası</th>
+                    <th className="bg-primary text-tertiary text-left py-3 px-4">Başlangıç Tarihi</th>
+                    <th className="bg-primary text-tertiary text-left py-3 px-4">Bitiş Tarihi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {propertyReservations.map((reservation, index) => (
+                    <tr key={index} className="hover:bg-primary/50 transition-colors">
+                      <td className="font-medium text-tertiary py-3 px-4">{reservation.userEmail}</td>
+                      <td className="text-gray-30 py-3 px-4">{reservation.startDate}</td>
+                      <td className="text-gray-30 py-3 px-4">{reservation.endDate}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <div className="bg-primary p-6 rounded-lg">
+              <Alert 
+                title="Bilgi" 
+                color="blue"
+                icon={
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                }
+              >
+                Bu ilan için henüz rezervasyon yapılmamış.
+              </Alert>
+            </div>
+          </div>
+        )}
       </Modal>
     </main>
   );

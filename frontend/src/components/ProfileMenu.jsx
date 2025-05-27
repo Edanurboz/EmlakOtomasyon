@@ -14,7 +14,7 @@ const ProfileMenu = ({ user, logout }) => {
       <Menu.Dropdown>
         <Menu.Item onClick={() => navigate("./my-listings", {replace:true})}>İlanlarım</Menu.Item>
         <Menu.Item onClick={() => navigate("./favourites", {replace:true})}>Favorilerim</Menu.Item>
-        <Menu.Item onClick={() => navigate("./bookings", {replace:true})}>Randevularım</Menu.Item>
+        <Menu.Item onClick={() => navigate("./bookings", {replace:true})}>Rezervasyonlarım</Menu.Item>
         <Menu.Item
           onClick={() => {
             localStorage.clear();
