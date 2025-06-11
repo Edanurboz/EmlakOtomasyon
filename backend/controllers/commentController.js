@@ -1,6 +1,6 @@
 import { prisma } from "../config/prismaConfig.js";
 
-// Yorum ekleme
+
 const createComment = async (req, res) => {
     try {
         const { content, rating, residencyId, userEmail } = req.body;
@@ -10,7 +10,7 @@ const createComment = async (req, res) => {
             return res.status(400).json({ error: 'Kullanıcı e-posta adresi bulunamadı' });
         }
 
-        // Önce residency'nin var olup olmadığını kontrol et
+        // Önce residency'nin var olup olmadığını kontrolü
         const residency = await prisma.residency.findUnique({
             where: { id: residencyId }
         });

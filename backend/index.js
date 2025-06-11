@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 import { userRoute } from "./routes/userRoute.js"
 import { residencyRoute } from "./routes/residencyRoute.js"
 import commentRoutes from "./routes/commentRoutes.js"
+
 dotenv.config()
 
 const app = express()
